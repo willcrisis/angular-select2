@@ -196,10 +196,12 @@ angular.module("rt.select2", [])
                     };
                 }
 
+                var previousSelection = [];
                 function getSelection(callback) {
                     if (isMultiple) {
                         getOptions(function (options) {
                             var selection = [];
+                            options = options.concat(previousSelection || []);
                             for (var i = 0; i < options.length; i++) {
                                 var option = options[i];
                                 var viewValue = controller.$viewValue || [];
@@ -207,6 +209,7 @@ angular.module("rt.select2", [])
                                     selection.push(option);
                                 }
                             }
+                            previousSelection = angular.copy(selection);
                             callback(selection);
                         });
                     } else {
@@ -270,7 +273,7 @@ angular.module("rt.select2", [])
                                 controller.$setViewValue(val ? val.id : null);
                             }
 
-                            controller.$render();
+                            //controller.$render();
 
                         });
                     });
