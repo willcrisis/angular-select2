@@ -189,6 +189,7 @@ angular.module("rt.select2", [])
                     getOptions = function (callback) {
                         opts.query({
                             term: "",
+                            selected: controller.$viewValue,
                             callback: function (query) {
                                 callback(query.results);
                             }
