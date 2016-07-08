@@ -64,9 +64,7 @@ angular.module("rt.select2", [])
                     };
                 }
 
-                if (attrs.placeholder) {
-                    opts.placeholder = attrs.placeholder;
-                }
+                opts.placeholder = attrs.placeholder || " ";
 
                 var filterOptions = $parse(attrs.optionsFilter);
 
