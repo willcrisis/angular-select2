@@ -25,16 +25,6 @@ angular.module("rt.select2", [])
 
         var filter = $filter("filter");
 
-        function sortedKeys(obj) {
-            var keys = [];
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    keys.push(key);
-                }
-            }
-            return keys.sort();
-        }
-
         var defaultOptions = {};
         //                       0000111110000000000022220000000000000000000000333300000000000000444444444444444000000000555555555555555000000066666666666666600000000000000007777000000000000000000088888
         var NG_OPTIONS_REGEXP = /^\s*(.*?)(?:\s+as\s+(.*?))?(?:\s+group\s+by\s+(.*))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+(.*?)(?:\s+track\s+by\s+(.*?))?$/;
@@ -102,7 +92,7 @@ angular.module("rt.select2", [])
                     getOptions = function (callback) {
                         optionItems = {};
                         var values = filterValues(valuesFn(scope));
-                        var keys = (keyName ? sortedKeys(values) : values) || [];
+                        var keys = values || [];
 
                         var options = [];
                         for (var i = 0; i < keys.length; i++) {
@@ -133,7 +123,7 @@ angular.module("rt.select2", [])
 
                     opts.query = function (query) {
                         var values = filterValues(valuesFn(scope));
-                        var keys = (keyName ? sortedKeys(values) : values) || [];
+                        var keys = values || [];
 
                         var options = [];
                         for (var i = 0; i < keys.length; i++) {
@@ -255,6 +245,11 @@ angular.module("rt.select2", [])
 
                 $timeout(function () {
                     element.select2(opts);
+                    element.select2("container").find("ul.select2-choices").sortable({
+                        containment: "parent",
+                        start: function () { element.select2("onSortStart"); },
+                        update: function () { element.select2("onSortEnd"); }
+                    });
                     element.on("change", function (e) {
                         scope.$evalAsync(function () {
                             var val;
